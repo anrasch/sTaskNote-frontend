@@ -58,8 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Registrierung erfolgreich');
                 toggleLogin();
             } else {
-                const errorData = await response.json();
-                alert(`Registrierung fehlgeschlagen: ${errorData.message || 'Unbekannter Fehler'}`);
+                const text = await response.text();
+                try {
+                    const errorData = JSON.parse(text);
+                    alert(`Registrierung fehlgeschlagen: ${errorData.message || 'Unbekannter Fehler'}`);
+                } catch {
+                    alert('Registrierung fehlgeschlagen: Unbekannter Fehler');
+                }
             }
         } catch (error) {
             alert(`Registrierung fehlgeschlagen: ${error.message}`);
