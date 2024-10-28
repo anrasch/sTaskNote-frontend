@@ -1,4 +1,4 @@
-const BACKEND_URL = 'https://stasknote.onrender.com';
+const BACKEND_URL = 'https://stasknote-backend.onrender.com';
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
