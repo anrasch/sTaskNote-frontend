@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadTasks();
                 loadNotes();
             } else {
-                alert('Login fehlgeschlagen');
+                const errorText = await response.text();
+                alert(`Login fehlgeschlagen: ${errorText || 'Unbekannter Fehler'}`);
             }
         } catch (error) {
             alert(`Login fehlgeschlagen: ${error.message}`);
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const errorData = JSON.parse(text);
                     alert(`Registrierung fehlgeschlagen: ${errorData.message || 'Unbekannter Fehler'}`);
                 } catch {
-                    alert('Registrierung fehlgeschlagen: Unbekannter Fehler');
+                    alert(`Registrierung fehlgeschlagen: ${text || 'Unbekannter Fehler'}`);
                 }
             }
         } catch (error) {
@@ -88,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 loadTasks();
             } else {
-                alert('Fehler beim Hinzufügen der Aufgabe');
+                const errorText = await response.text();
+                alert(`Fehler beim Hinzufügen der Aufgabe: ${errorText || 'Unbekannter Fehler'}`);
             }
         } catch (error) {
             alert(`Fehler beim Hinzufügen der Aufgabe: ${error.message}`);
@@ -112,7 +114,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 loadNotes();
             } else {
-                alert('Fehler beim Hinzufügen der Notiz');
+                const errorText = await response.text();
+                alert(`Fehler beim Hinzufügen der Notiz: ${errorText || 'Unbekannter Fehler'}`);
             }
         } catch (error) {
             alert(`Fehler beim Hinzufügen der Notiz: ${error.message}`);
@@ -134,6 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     li.textContent = task.title + (task.completed ? ' (erledigt)' : '');
                     taskList.appendChild(li);
                 });
+            } else {
+                const errorText = await response.text();
+                alert(`Fehler beim Laden der Aufgaben: ${errorText || 'Unbekannter Fehler'}`);
             }
         } catch (error) {
             alert(`Fehler beim Laden der Aufgaben: ${error.message}`);
@@ -155,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     li.textContent = note.content;
                     noteList.appendChild(li);
                 });
+            } else {
+                const errorText = await response.text();
+                alert(`Fehler beim Laden der Notizen: ${errorText || 'Unbekannter Fehler'}`);
             }
         } catch (error) {
             alert(`Fehler beim Laden der Notizen: ${error.message}`);
