@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('register-form');
     const taskForm = document.getElementById('task-form');
     const noteForm = document.getElementById('note-form');
+    const logoutButton = document.getElementById('logout-button');
     let token = localStorage.getItem('token') || '';
 
     if (token) {
@@ -120,6 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             alert(`Fehler beim Hinzufügen der Notiz: ${error.message}`);
         }
+    });
+
+    logoutButton.addEventListener('click', function() {
+        token = '';
+        localStorage.removeItem('token');
+        document.getElementById('main-section').style.display = 'none';
+        document.getElementById('login-section').style.display = 'block';
     });
 
     async function loadTasks() {
