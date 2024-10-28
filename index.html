@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <title>sTaskNote - Aufgaben & Notizen</title>
+</head>
+<body>
+    <div id="login-section">
+        <h2>Anmeldung</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button type="submit">Anmelden</button>
+        </form>
+        <div id="register-link">
+            <a href="#" onclick="toggleRegister()">Kein Konto? Registrieren</a>
+        </div>
+    </div>
+
+    <div id="register-section" style="display:none;">
+        <h2>Registrieren</h2>
+        <form id="register-form">
+            <input type="text" id="reg-username" placeholder="Benutzername" required>
+            <input type="password" id="reg-password" placeholder="Passwort" required>
+            <button type="submit">Registrieren</button>
+        </form>
+        <div id="login-link">
+            <a href="#" onclick="toggleLogin()">Zurück zur Anmeldung</a>
+        </div>
+    </div>
+
+    <div id="main-section" style="display:none;">
+        <h2>Aufgaben</h2>
+        <form id="task-form">
+            <input type="text" id="task-title" placeholder="Neue Aufgabe" required>
+            <button type="submit">Hinzufügen</button>
+        </form>
+        <ul id="task-list"></ul>
+
+        <h2>Notizen</h2>
+        <form id="note-form">
+            <textarea id="note-content" placeholder="Neue Notiz"></textarea>
+            <button type="submit">Hinzufügen</button>
+        </form>
+        <ul id="note-list"></ul>
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
