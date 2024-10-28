@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="icon" href="assets/logo.ico" type="image/x-icon">
     <title>sTaskNote - Aufgaben & Notizen</title>
 </head>
 <body>
-    <div id="login-section">
+    <div id="login-section" class="card">
         <h2>Anmeldung</h2>
         <form id="login-form">
             <input type="text" id="username" placeholder="Benutzername" required>
@@ -20,7 +21,7 @@
         </div>
     </div>
 
-    <div id="register-section" style="display:none;">
+    <div id="register-section" class="card" style="display:none;">
         <h2>Registrieren</h2>
         <form id="register-form">
             <input type="text" id="reg-username" placeholder="Benutzername" required>
@@ -32,7 +33,7 @@
         </div>
     </div>
 
-    <div id="main-section" style="display:none;">
+    <div id="main-section" class="card" style="display:none;">
         <h2>Aufgaben</h2>
         <form id="task-form">
             <input type="text" id="task-title" placeholder="Neue Aufgabe" required>
@@ -47,7 +48,7 @@
         </form>
         <ul id="note-list"></ul>
 
-        <button id="logout-button">Abmelden</button>
+        <button id="logout-button" onclick="logout()">Abmelden</button>
     </div>
 
     <script src="scripts/main.js"></script>
