@@ -5,28 +5,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('register-form');
     const taskForm = document.getElementById('task-form');
     const noteForm = document.getElementById('note-form');
-    let token = '';
+    let token = localStorage.getItem('token') || '';
+
+    if (token) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('main-section').style.display = 'block';
+        loadTasks();
+        loadNotes();
+    }
 
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        const response = await fetch(`${BACKEND_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+        try {
+            const response = await fetch(`${BACKEND_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-        if (response.ok) {
-            const data = await response.json();
-            token = data.token;
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('main-section').style.display = 'block';
-            loadTasks();
-            loadNotes();
-        } else {
-            alert('Login fehlgeschlagen');
+            if (response.ok) {
+                const data = await response.json();
+                token = data.token;
+                localStorage.setItem('token', token);
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('main-section').style.display = 'block';
+                loadTasks();
+                loadNotes();
+            } else {
+                alert('Login fehlgeschlagen');
+            }
+        } catch (error) {
+            alert(`Login fehlgeschlagen: ${error.message}`);
         }
     });
 
@@ -35,17 +47,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = document.getElementById('reg-username').value;
         const password = document.getElementById('reg-password').value;
 
-        const response = await fetch(`${BACKEND_URL}/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+        try {
+            const response = await fetch(`${BACKEND_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-        if (response.ok) {
-            alert('Registrierung erfolgreich');
-            toggleLogin();
-        } else {
-            alert('Registrierung fehlgeschlagen');
+            if (response.ok) {
+                alert('Registrierung erfolgreich');
+                toggleLogin();
+            } else {
+                const errorData = await response.json();
+                alert(`Registrierung fehlgeschlagen: ${errorData.message || 'Unbekannter Fehler'}`);
+            }
+        } catch (error) {
+            alert(`Registrierung fehlgeschlagen: ${error.message}`);
         }
     });
 
@@ -53,19 +70,23 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const title = document.getElementById('task-title').value;
 
-        const response = await fetch(`${BACKEND_URL}/tasks`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': token
-            },
-            body: JSON.stringify({ title })
-        });
+        try {
+            const response = await fetch(`${BACKEND_URL}/tasks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                },
+                body: JSON.stringify({ title })
+            });
 
-        if (response.ok) {
-            loadTasks();
-        } else {
-            alert('Fehler beim Hinzufügen der Aufgabe');
+            if (response.ok) {
+                loadTasks();
+            } else {
+                alert('Fehler beim Hinzufügen der Aufgabe');
+            }
+        } catch (error) {
+            alert(`Fehler beim Hinzufügen der Aufgabe: ${error.message}`);
         }
     });
 
@@ -73,53 +94,65 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const content = document.getElementById('note-content').value;
 
-        const response = await fetch(`${BACKEND_URL}/notes`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': token
-            },
-            body: JSON.stringify({ content })
-        });
+        try {
+            const response = await fetch(`${BACKEND_URL}/notes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                },
+                body: JSON.stringify({ content })
+            });
 
-        if (response.ok) {
-            loadNotes();
-        } else {
-            alert('Fehler beim Hinzufügen der Notiz');
+            if (response.ok) {
+                loadNotes();
+            } else {
+                alert('Fehler beim Hinzufügen der Notiz');
+            }
+        } catch (error) {
+            alert(`Fehler beim Hinzufügen der Notiz: ${error.message}`);
         }
     });
 
     async function loadTasks() {
-        const response = await fetch(`${BACKEND_URL}/tasks`, {
-            headers: { 'x-access-token': token }
-        });
-
-        if (response.ok) {
-            const tasks = await response.json();
-            const taskList = document.getElementById('task-list');
-            taskList.innerHTML = '';
-            tasks.forEach(task => {
-                const li = document.createElement('li');
-                li.textContent = task.title + (task.completed ? ' (erledigt)' : '');
-                taskList.appendChild(li);
+        try {
+            const response = await fetch(`${BACKEND_URL}/tasks`, {
+                headers: { 'x-access-token': token }
             });
+
+            if (response.ok) {
+                const tasks = await response.json();
+                const taskList = document.getElementById('task-list');
+                taskList.innerHTML = '';
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.title + (task.completed ? ' (erledigt)' : '');
+                    taskList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            alert(`Fehler beim Laden der Aufgaben: ${error.message}`);
         }
     }
 
     async function loadNotes() {
-        const response = await fetch(`${BACKEND_URL}/notes`, {
-            headers: { 'x-access-token': token }
-        });
-
-        if (response.ok) {
-            const notes = await response.json();
-            const noteList = document.getElementById('note-list');
-            noteList.innerHTML = '';
-            notes.forEach(note => {
-                const li = document.createElement('li');
-                li.textContent = note.content;
-                noteList.appendChild(li);
+        try {
+            const response = await fetch(`${BACKEND_URL}/notes`, {
+                headers: { 'x-access-token': token }
             });
+
+            if (response.ok) {
+                const notes = await response.json();
+                const noteList = document.getElementById('note-list');
+                noteList.innerHTML = '';
+                notes.forEach(note => {
+                    const li = document.createElement('li');
+                    li.textContent = note.content;
+                    noteList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            alert(`Fehler beim Laden der Notizen: ${error.message}`);
         }
     }
 });
