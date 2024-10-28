@@ -9,7 +9,7 @@
     <title>sTaskNote - Aufgaben & Notizen</title>
 </head>
 <body>
-    <div id="login-section" class="card">
+    <div id="login-section">
         <h2>Anmeldung</h2>
         <form id="login-form">
             <input type="text" id="username" placeholder="Benutzername" required>
@@ -17,11 +17,11 @@
             <button type="submit">Anmelden</button>
         </form>
         <div id="register-link">
-            <a href="#" onclick="toggleRegister()">Kein Konto? Registrieren</a>
+            <button class="toggle-button" onclick="toggleRegister()">Kein Konto? Registrieren</button>
         </div>
     </div>
-
-    <div id="register-section" class="card" style="display:none;">
+    
+    <div id="register-section" style="display:none;">
         <h2>Registrieren</h2>
         <form id="register-form">
             <input type="text" id="reg-username" placeholder="Benutzername" required>
@@ -29,10 +29,10 @@
             <button type="submit">Registrieren</button>
         </form>
         <div id="login-link">
-            <a href="#" onclick="toggleLogin()">Zurück zur Anmeldung</a>
+            <button class="toggle-button" onclick="toggleLogin()">Zurück zur Anmeldung</button>
         </div>
     </div>
-
+    
     <div id="main-section" class="card" style="display:none;">
         <h2>Aufgaben</h2>
         <form id="task-form">

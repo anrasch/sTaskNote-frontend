@@ -73,3 +73,20 @@ h2 {
 #logout-button:hover {
     background-color: #e17055;
 }
+
+.toggle-button {
+    background-color: #f0ad4e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #ec971f;
+}
